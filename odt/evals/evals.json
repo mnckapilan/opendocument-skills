@@ -1,0 +1,90 @@
+{
+  "skill_name": "odt",
+  "evals": [
+    {
+      "id": 1,
+      "name": "explore-document",
+      "prompt": "What's in evals/files/report.odt? Describe its structure and content.",
+      "expected_output": "A summary of the document: a Project Status Report with 3 headings (Executive Summary, Current Progress, Next Steps), and the key content under each — including the Q1 2025 delivery date, the three progress items with percentages, and the next steps.",
+      "files": ["evals/files/report.odt"],
+      "assertions": [
+        "Response mentions the document title or describes it as a project status report",
+        "Response identifies the three headings: Executive Summary, Current Progress, and Next Steps",
+        "Response mentions at least one of the progress percentages (85%, 60%, or 40%)",
+        "Response does not hallucinate sections or content that don't exist"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "precise-block-lookup",
+      "prompt": "In evals/files/report.odt, what is the text at block index 6?",
+      "expected_output": "The text is 'Testing: 60% complete'.",
+      "files": ["evals/files/report.odt"],
+      "assertions": [
+        "Response states the text 'Testing: 60% complete'",
+        "Response identifies the correct index (6)"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "list-headings",
+      "prompt": "What sections does evals/files/report.odt have? List the headings.",
+      "expected_output": "Three headings: Executive Summary (index 2), Current Progress (index 4), Next Steps (index 8).",
+      "files": ["evals/files/report.odt"],
+      "assertions": [
+        "Response lists Executive Summary as a heading",
+        "Response lists Current Progress as a heading",
+        "Response lists Next Steps as a heading",
+        "Response does not list non-heading blocks as headings"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "append-content",
+      "prompt": "Add a new paragraph 'Risks: None identified at this time.' to the end of evals/files/report.odt.",
+      "expected_output": "A new paragraph is appended at the end of the document. The file is saved and the addition is confirmed.",
+      "files": ["evals/files/report.odt"],
+      "assertions": [
+        "Response confirms the paragraph was added successfully",
+        "The last block in the output file contains 'Risks: None identified at this time.'",
+        "No existing blocks were modified"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "find-replace",
+      "prompt": "In evals/files/notes.odt, replace all occurrences of 'Friday' with 'end of sprint'.",
+      "expected_output": "The word 'Friday' in Alice's action item is replaced with 'end of sprint'. The file is saved.",
+      "files": ["evals/files/notes.odt"],
+      "assertions": [
+        "Response confirms the replacement was made",
+        "The file no longer contains the word 'Friday'",
+        "Alice's action item now reads 'Alice: Update deployment scripts by end of sprint.'"
+      ]
+    },
+    {
+      "id": 6,
+      "name": "create-with-content",
+      "prompt": "Create a new ODT document at /tmp/memo.odt with the title 'Weekly Memo', then add a heading 'Action Items' followed by a paragraph 'Complete the ODT skill implementation.'",
+      "expected_output": "A new file /tmp/memo.odt is created with the title 'Weekly Memo'. It has one heading ('Action Items') and one paragraph ('Complete the ODT skill implementation.').",
+      "files": [],
+      "assertions": [
+        "Response confirms the file was created",
+        "The file has a heading 'Action Items'",
+        "The file has a paragraph 'Complete the ODT skill implementation.'",
+        "file-info shows total_blocks of 2"
+      ]
+    },
+    {
+      "id": 7,
+      "name": "index-out-of-range-error",
+      "prompt": "Get block index 999 from evals/files/report.odt.",
+      "expected_output": "A clear error that the index 999 is out of range, along with how many blocks the document actually has.",
+      "files": ["evals/files/report.odt"],
+      "assertions": [
+        "Response communicates that the index was out of range",
+        "Response mentions the actual block count or valid range"
+      ]
+    }
+  ]
+}

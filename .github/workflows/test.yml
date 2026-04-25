@@ -16,3 +16,6 @@ jobs:
 
       - name: Run ODS tests
         run: uv run --with pytest pytest ods/tests/ -v
+
+      - name: Run ODT tests
+        run: uv run --with pytest pytest odt/tests/ -v

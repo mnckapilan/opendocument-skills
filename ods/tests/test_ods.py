@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from conftest import run
+from .conftest import run
 
 
 # ── create ────────────────────────────────────────────────────────────────────
