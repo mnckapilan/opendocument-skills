@@ -1,9 +1,11 @@
 ---
 name: ods
 description: >
-  Work with ODS (OpenDocument Spreadsheet) files. Use when the user wants to
-  read, write, create, or modify .ods spreadsheet files — listing sheets,
-  reading rows, getting or setting cells, appending data, or managing sheets.
+  Work with ODS (OpenDocument Spreadsheet) files — the spreadsheet format used
+  by LibreOffice, OpenOffice, and other open-source office suites. Use when the
+  user wants to read, write, create, or modify .ods files: listing sheets,
+  reading tabular data, getting or setting cells, appending rows, or managing
+  sheets.
 license: MIT
 compatibility: Requires uv and Python 3.11+
 allowed-tools: Bash(uv:*)
@@ -48,23 +50,22 @@ Run `uv run scripts/ods.py --help` for the full command list, or
 | 3 | Sheet not found |
 | 5 | ODF parse or write error |
 
+## Gotchas
+
+- **Always use `uv run`** — invoke as `uv run scripts/ods.py <command>`, never `python scripts/ods.py`. Running with plain Python will fail because dependencies are declared as PEP 723 inline metadata and installed by uv.
+- **`set-cell` discards formatting** — it rebuilds the sheet element, so cell-level formatting (fonts, colours, borders) is not preserved. Formulas are also replaced by their last computed values.
+- **`create` fails if the file exists** — pass `--overwrite` only after confirming with the user. Omitting it when the file is present raises an error (exit code 1), which is the safe default.
+- **`delete-sheet --confirm` is irreversible** — always verify with the user before passing this flag.
+
 ## Workflow guidance
 
 **Exploring a file** — always run `file-info` first to understand the
 structure, then `read-sheet` for data. For large sheets use `--limit` and
 `--offset` to page through rows rather than reading everything at once.
 
-**Writing data** — `append-rows` is efficient for adding multiple rows.
-`set-cell` is fine for single updates but rebuilds the sheet element, so
-cell-level formatting (fonts, colours, borders) is not preserved. Formulas
-are also replaced by their last computed values.
+**Writing data** — `append-rows` is efficient for adding multiple rows. `set-cell` is fine for single updates (see Gotchas for formatting caveats).
 
-**Destructive operations** — `delete-sheet` requires `--confirm`. Always
-check with the user before passing this flag.
-
-**Idempotent creation** — `create` fails if the file exists unless
-`--overwrite` is passed. Prefer checking first with `file-info` if
-unsure whether the file already exists.
+**Destructive operations** — confirm with the user before passing `--confirm` to `delete-sheet` or `--overwrite` to `create`.
 
 ## Examples
 
